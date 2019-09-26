@@ -1,6 +1,6 @@
 import React from 'react'
 import api from '../api'
-import logo from '../logo.svg'
+import logo from '../images/nissan-logo.png'
 import { Link, NavLink } from 'react-router-dom'
 import { withRouter } from 'react-router'
 
@@ -9,22 +9,22 @@ function MainNavbar(props) {
     api.logout()
   }
   return (
-    <nav className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
-      <h1 className="App-title">MERN Boilerplate</h1>
-      <NavLink to="/" exact>
-        Home
-      </NavLink>
-      <NavLink to="/countries">Countries</NavLink>
-      <NavLink to="/add-country">Add country</NavLink>
-      {!api.isLoggedIn() && <NavLink to="/signup">Signup</NavLink>}
-      {!api.isLoggedIn() && <NavLink to="/login">Login</NavLink>}
-      {api.isLoggedIn() && (
-        <Link to="/" onClick={handleLogoutClick}>
-          Logout
-        </Link>
-      )}
-      <NavLink to="/secret">Secret</NavLink>
+    <nav className="MainNavbar">
+      <div className="MainNavbar__fistDiv">
+        {!api.isLoggedIn() && <NavLink to="/signup">Signup</NavLink>}
+        {!api.isLoggedIn() && <NavLink to="/login">Login</NavLink>}
+        {api.isLoggedIn() && (
+          <Link to="/" onClick={handleLogoutClick}>
+            Logout
+          </Link>
+        )}
+      </div>
+
+      <div className="MainNavbar__secondDiv">
+        <NavLink to="/" exact>
+          <img src={logo} className="MainNavbar__logo" alt="logo" />
+        </NavLink>
+      </div>
     </nav>
   )
 }

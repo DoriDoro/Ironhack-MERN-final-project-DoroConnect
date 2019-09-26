@@ -48,6 +48,7 @@ export function useForm(initialValues = {}) {
       name: fieldName,
       value: formValues[fieldName] || '',
       onChange: handleChange,
+      checked: formValues[fieldName] || false,
     }
   }
 

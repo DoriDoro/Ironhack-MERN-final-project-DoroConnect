@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import api from '../../api'
 
 export default function Countries() {
-  const [countries, setCountries] = useState([])
+  const [vins, setVins] = useState([])
   useEffect(() => {
     api
       .getCountries()
-      .then(countries => {
-        setCountries(countries)
+      .then(vins => {
+        setVins(vins)
       })
       .catch(err => console.log(err))
   }, [])
@@ -15,8 +15,8 @@ export default function Countries() {
   return (
     <div className="Countries">
       <h2>List of countries</h2>
-      {countries.map(c => (
-        <li key={c._id}>{c.name}</li>
+      {vins.map(v => (
+        <li key={v._id}>{v.name}</li>
       ))}
     </div>
   )
