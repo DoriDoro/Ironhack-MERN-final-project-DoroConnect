@@ -1,6 +1,5 @@
 import React from 'react'
 import api from '../api'
-import logo from '../images/nissan-logo.png'
 import { Link, NavLink } from 'react-router-dom'
 import { withRouter } from 'react-router'
 
@@ -22,7 +21,10 @@ function MainNavbar(props) {
 
       <div className="MainNavbar__secondDiv">
         <NavLink to="/" exact>
-          <img src={logo} className="MainNavbar__logo" alt="logo" />
+          <div className="MainNavbar__logo">
+            <h3> DoroConnect </h3>
+            <p> Innovation that excites </p>
+          </div>
         </NavLink>
       </div>
     </nav>

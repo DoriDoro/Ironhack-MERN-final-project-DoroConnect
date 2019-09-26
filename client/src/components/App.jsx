@@ -8,6 +8,10 @@ import Secret from './pages/Secret'
 import VIN from './adminPages/VIN'
 import AddVIN from './adminPages/AddVIN'
 import Profile from './pages/Profile'
+import VehicleDetails from './pages/VehicleDetails'
+import AddVehicle from './pages/AddVehicle'
+import EditProfile from './pages/EditProfile'
+import ConnectedServices from './pages/ConnectedServices'
 
 export default function App() {
   return (
@@ -21,6 +25,10 @@ export default function App() {
           <Route path="/login" component={Login} />
           <Route path="/secret" component={Secret} />
           <Route path="/profile" component={Profile} />
+          <Route path="/edit-profile" component={EditProfile} />
+          <Route path="/vehicle-details" component={VehicleDetails} />
+          <Route path="/add-vehicle" component={AddVehicle} />
+          <Route path="/services" component={ConnectedServices} />
 
           <Route path="/VIN" component={VIN} />
           <Route path="/add-vin" component={AddVIN} />

@@ -87,7 +87,7 @@ export default function Signup(props) {
           onChange={handleInputChange}
         />
         <div className="form-div__btn">
-          <button onClick={e => handleClick(e)}>Next</button>
+          <button onClick={e => handleClick(e)}> Signup </button>
         </div>
       </form>
       {state.message && <div className="info info-danger">{state.message}</div>}

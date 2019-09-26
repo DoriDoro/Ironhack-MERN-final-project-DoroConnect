@@ -8,96 +8,66 @@ const VINModel = require('../models/VIN')
 const bcrypt = require('bcrypt')
 const bcryptSalt = 10
 
-router
-  .post('/signup', (req, res, next) => {
-    const { VIN, email, password, firstName, lastName } = req.body
-    if (!VIN) {
-      res.status(400).json({ message: 'Indicate VIN' })
-      return
-    }
-    if (!email || !password) {
-      res.status(400).json({ message: 'Indicate email and password' })
-      return
-    }
-
-    VINModel.findOne({ VIN })
-      .then(vinDoc => {
-        if (vinDoc === null) {
-          res.status(409).json({ message: 'The VIN does not exist' })
-          return
-        }
-        const newVIN = new VINModel({
-          VIN,
-        })
-        newVIN.save()
-        return res.send('oki so far')
-      })
-      .then(
-        // TODO!!!
-        User.findOne({ email })
-          .then(userDoc => {
-            if (userDoc !== null) {
-              res.status(409).json({ message: 'The email already exists' })
-              return
-            }
-            const salt = bcrypt.genSaltSync(bcryptSalt)
-            const hashPass = bcrypt.hashSync(password, salt)
-            const newUser = new User({
-              email,
-              password: hashPass,
-              firstName,
-              lastName,
-            })
-            return newUser.save()
-          })
-          .then(userSaved => {
-            // LOG IN THIS USER
-            // "req.logIn()" is a Passport method that calls "serializeUser()"
-            // (that saves the USER ID in the session)
-            req.logIn(userSaved, () => {
-              // hide "encryptedPassword" before sending the JSON (it's a security risk)
-              userSaved.password = undefined
-              res.json(userSaved)
-            })
-          })
-          .catch(err => next(err))
-      )
-  })
-  .catch(err => next(err))
-
-router.post('/signup-profile', (req, res, next) => {
-  const { email, password, firstName, lastName } = req.body
+router.post('/signup', (req, res, next) => {
+  const { VIN, email, password, firstName, lastName } = req.body
+  if (!VIN) {
+    res.status(400).json({ message: 'Please enter your VIN' })
+    return
+  }
   if (!email || !password) {
     res.status(400).json({ message: 'Indicate email and password' })
     return
   }
-  User.findOne({ email })
-    .then(userDoc => {
-      if (userDoc !== null) {
-        res.status(409).json({ message: 'The email already exists' })
-        return
-      }
-      const salt = bcrypt.genSaltSync(bcryptSalt)
-      const hashPass = bcrypt.hashSync(password, salt)
-      const newUser = new User({
-        email,
-        password: hashPass,
-        firstName,
-        lastName,
+
+  VINModel.findOne({ VIN }).then(vinDoc => {
+    if (vinDoc === null) {
+      res
+        .status(409)
+        .json({ message: 'The VIN does not exist in the database' })
+      return
+    }
+
+    User.findOne({ email })
+      .then(userDoc => {
+        if (userDoc !== null) {
+          res.status(409).json({ message: 'The email address already exists' })
+          return
+        }
+        console.log(vinDoc._id)
+        const salt = bcrypt.genSaltSync(bcryptSalt)
+        const hashPass = bcrypt.hashSync(password, salt)
+        User.create({
+          email: req.body.email,
+          password: hashPass,
+          VIN_ids: vinDoc._id, // User.update({ $push: {VIN_ids: value}})
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+        })
+          .then(user => console.log(user))
+          .catch(err => next(err))
+
+        // const newUser = new User({
+        //   vinDoc._id,
+        //   email,
+        //   password: hashPass,
+        //   firstName,
+        //   lastName,
+        // })
+        // return newUser.save()
       })
-      return newUser.save()
-    })
-    .then(userSaved => {
-      // LOG IN THIS USER
-      // "req.logIn()" is a Passport method that calls "serializeUser()"
-      // (that saves the USER ID in the session)
-      req.logIn(userSaved, () => {
-        // hide "encryptedPassword" before sending the JSON (it's a security risk)
-        userSaved.password = undefined
-        res.json(userSaved)
+      .then(userSaved => {
+        // LOG IN THIS USER
+        // "req.logIn()" is a Passport method that calls "serializeUser()"
+        // (that saves the USER ID in the session)
+        req.logIn(userSaved, () => {
+          // hide "encryptedPassword" before sending the JSON (it's a security risk)
+          userSaved.password = undefined
+          res.json(userSaved)
+        })
       })
-    })
-    .catch(err => next(err))
+      .catch(err => next(err))
+    return res.send('oki so far')
+  }) // update the found VIN inside of the database
 })
 
 router.post('/login', (req, res, next) => {

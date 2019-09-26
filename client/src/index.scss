@@ -51,6 +51,7 @@ li {
 }
 .MainNavbar__fistDiv {
   background-color: #eee;
+  border-radius: 5px;
   display: flex;
   justify-content: flex-end;
   padding: 10px;
@@ -58,21 +59,36 @@ li {
 .MainNavbar__secondDiv {
   display: flex;
   justify-content: flex-start;
+  padding-top: 5px;
 }
 .MainNavbar__logo {
-  height: 80px;
+  align-items: center;
+  background-color: #c4092f;
+  border-radius: 5px;
+  color: #eee;
+  display: flex;
+  flex-direction: column;
+  height: 50px;
+  justify-content: center;
+  width: 140px;
+}
+.MainNavbar__logo p {
+  font-size: 10px;
 }
 
 /* -- App -- */
 .App {
   background-color: #eee;
+  border-radius: 5px;
   padding: 20px;
+  margin: 20px;
 }
 
 /* --- pages: --- */
 /* -- general pages classes -- */
 .form {
   padding: 50px;
+  width: fit-content;
 }
 .form label {
   display: inline-block;
@@ -95,6 +111,13 @@ li {
 .form-div__btn {
   display: flex;
   justify-content: flex-end;
+}
+.form-div__btn-container {
+  display: flex;
+  justify-content: center;
+}
+.btn-margin {
+  margin-right: 10px;
 }
 
 /* -- pages: Signup -- */
@@ -119,7 +142,22 @@ li {
   flex-direction: column;
 }
 
-/* -- pages:  -- */
+/* -- pages: Profile -- */
+.Profile__div-container {
+  display: flex;
+  justify-content: space-between;
+}
+.Profile__form-ProfileDetails {
+  display: flex;
+  flex-direction: column;
+}
+.Profile__form-ProfileDetails button {
+  background-color: #c4092f;
+  border: none;
+  border-radius: 10px;
+  color: #eee;
+  padding: 8px;
+}
 
 /*  --- class info --- */
 .info {
