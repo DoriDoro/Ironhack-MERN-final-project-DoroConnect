@@ -12,6 +12,7 @@ import VehicleDetails from './pages/VehicleDetails'
 import AddVehicle from './pages/AddVehicle'
 import EditProfile from './pages/EditProfile'
 import ConnectedServices from './pages/ConnectedServices'
+import VehicleEdit from './pages/VehicleEdit'
 
 export default function App() {
   return (
@@ -19,21 +20,24 @@ export default function App() {
       <MainNavbar />
 
       <div className="App">
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/signup" component={Signup} />
-          <Route path="/login" component={Login} />
-          <Route path="/secret" component={Secret} />
-          <Route path="/profile" component={Profile} />
-          <Route path="/edit-profile" component={EditProfile} />
-          <Route path="/vehicle-details" component={VehicleDetails} />
-          <Route path="/add-vehicle" component={AddVehicle} />
-          <Route path="/services" component={ConnectedServices} />
+        <div className="App__container">
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/signup" component={Signup} />
+            <Route path="/login" component={Login} />
+            <Route path="/secret" component={Secret} />
+            <Route path="/profile" component={Profile} />
+            <Route path="/edit-profile/:id" component={EditProfile} />
+            <Route path="/vehicle-details/:VIN" component={VehicleDetails} />
+            <Route path="/add-vehicle" component={AddVehicle} />
+            <Route path="/edit-vehicle/:VIN" component={VehicleEdit} />
+            <Route path="/services/:VIN" component={ConnectedServices} />
 
-          <Route path="/VIN" component={VIN} />
-          <Route path="/add-vin" component={AddVIN} />
-          <Route render={() => <h2>404</h2>} />
-        </Switch>
+            <Route path="/VIN" component={VIN} />
+            <Route path="/add-vin" component={AddVIN} />
+            <Route render={() => <h2>404</h2>} />
+          </Switch>
+        </div>
       </div>
     </div>
   )

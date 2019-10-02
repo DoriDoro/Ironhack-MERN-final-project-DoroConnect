@@ -78,10 +78,17 @@ li {
 
 /* -- App -- */
 .App {
+  display: flex;
+  justify-content: center;
+}
+.App__container {
   background-color: #eee;
   border-radius: 5px;
+  display: flex;
+  justify-content: center;
   padding: 20px;
   margin: 20px;
+  width: 100%;
 }
 
 /* --- pages: --- */
@@ -108,16 +115,37 @@ li {
   color: #eee;
   padding: 8px;
 }
+.form__button-grey {
+  background-color: #eee;
+  border: none;
+  border-radius: 10px;
+  color: #c4092f;
+  padding: 8px;
+}
 .form-div__btn {
   display: flex;
   justify-content: flex-end;
 }
 .form-div__btn-container {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
 }
 .btn-margin {
   margin-right: 10px;
+}
+.form-div__btn-container-add-margin {
+  margin-bottom: 20px;
+}
+
+/* -- pages: Home -- */
+.Home {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+}
+.Home p {
+  padding-top: 30px;
 }
 
 /* -- pages: Signup -- */
@@ -143,6 +171,9 @@ li {
 }
 
 /* -- pages: Profile -- */
+.Profile {
+  width: 60%;
+}
 .Profile__div-container {
   display: flex;
   justify-content: space-between;
@@ -157,6 +188,46 @@ li {
   border-radius: 10px;
   color: #eee;
   padding: 8px;
+}
+.Profile__vehicle-container {
+  padding-top: 10px;
+}
+
+/* -- page: ConnectedServices -- */
+.ConnectedServices {
+  width: 100vh;
+}
+.ConnectedServices__icons-container {
+  display: flex;
+}
+.ConnectedServices__icons {
+  background-color: #c4092f;
+  border: 2px solid #eee;
+  border-radius: 100px;
+  height: 70px;
+  width: 70px;
+}
+.ConnectedServices__icons i {
+  width: 70px;
+}
+.fas {
+  align-items: center;
+  color: #eee;
+  display: flex;
+  justify-content: center;
+  font-size: 40px;
+}
+.ConnectedServices__battery {
+  display: flex;
+  margin: 20px 0;
+}
+.ConnectedServices__battery p {
+  padding-right: 20px;
+}
+
+/* -- page: AddVehicle -- */
+.AddVehicle p {
+  padding-top: 30px;
 }
 
 /*  --- class info --- */

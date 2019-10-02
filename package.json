@@ -10,5 +10,8 @@
   },
   "engines": {
     "node": "8.9.4"
+  },
+  "dependencies": {
+    "react-use": "^12.2.2"
   }
 }

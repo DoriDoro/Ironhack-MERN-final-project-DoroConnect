@@ -33,69 +33,51 @@ router.post('/signup', (req, res, next) => {
           res.status(409).json({ message: 'The email address already exists' })
           return
         }
-        console.log(vinDoc._id)
+        // console.log(vinDoc._id)
         const salt = bcrypt.genSaltSync(bcryptSalt)
         const hashPass = bcrypt.hashSync(password, salt)
         User.create({
           email: req.body.email,
           password: hashPass,
-          VIN_ids: vinDoc._id, // User.update({ $push: {VIN_ids: value}})
+          VIN_ids: vinDoc._id,
           firstName: req.body.firstName,
           lastName: req.body.lastName,
         })
-          .then(user => console.log(user))
+          .populate('VIN_ids')
+          .then(userSaved => {
+            // LOG IN THIS USER
+            // "req.logIn()" is a Passport method that calls "serializeUser()"
+            // (that saves the USER ID in the session)
+            req.logIn(userSaved, () => {
+              // hide "encryptedPassword" before sending the JSON (it's a security risk)
+              userSaved.password = undefined
+              res.json(userSaved)
+            })
+          })
           .catch(err => next(err))
-
-        // const newUser = new User({
-        //   vinDoc._id,
-        //   email,
-        //   password: hashPass,
-        //   firstName,
-        //   lastName,
-        // })
-        // return newUser.save()
-      })
-      .then(userSaved => {
-        // LOG IN THIS USER
-        // "req.logIn()" is a Passport method that calls "serializeUser()"
-        // (that saves the USER ID in the session)
-        req.logIn(userSaved, () => {
-          // hide "encryptedPassword" before sending the JSON (it's a security risk)
-          userSaved.password = undefined
-          res.json(userSaved)
-        })
       })
       .catch(err => next(err))
-    return res.send('oki so far')
-  }) // update the found VIN inside of the database
+  })
 })
 
 router.post('/login', (req, res, next) => {
   const { email, password } = req.body
 
-  // first check to see if there's a document with that email
   User.findOne({ email })
+    .populate('VIN_ids')
     .then(userDoc => {
       // "userDoc" will be empty if the email is wrong (no document in database)
       if (!userDoc) {
-        // create an error object to send to our error handler with "next()"
         next(new Error('Incorrect login details'))
         return
       }
 
-      // second check the password
-      // "compareSync()" will return false if the "password" is wrong
       if (!bcrypt.compareSync(password, userDoc.password)) {
-        // create an error object to send to our error handler with "next()"
         next(new Error('Incorrect login details'))
         return
       }
 
-      // LOG IN THIS USER
-      // "req.logIn()" is a Passport method that calls "serializeUser()"
-      // (that saves the USER ID in the session)
       req.logIn(userDoc, () => {
-        // hide "encryptedPassword" before sending the JSON (it's a security risk)
         userDoc.password = undefined
         res.json(userDoc)
       })
@@ -130,6 +112,70 @@ router.post('/login-with-passport-local-strategy', (req, res, next) => {
 router.get('/logout', (req, res) => {
   req.logout()
   res.json({ message: 'You are out!' })
+})
+
+router.post('/edit-profile', (req, res, next) => {
+  const { firstName, lastName, email, phone, address } = req.body
+
+  User.findOneAndUpdate(
+    { email }, // find by email
+    { firstName, lastName, phone, address }, // which parts are to update
+    { new: true } // mentatory
+  )
+    .populate('VIN_ids')
+    .then(editProfile => {
+      res.send(editProfile)
+    })
+    .catch(err => next(err))
+})
+
+router.post('/edit-vehicle', (req, res, next) => {
+  // console.log(req.body) chaeck the name of VIN in the req.body
+  const { vin } = req.body
+
+  VINModel.findOne({ VIN: vin })
+    .then(vinDoc => {
+      // console.log(vinDoc)
+      if (vinDoc === null) {
+        res
+          .status(409)
+          .json({ message: 'The VIN does not exist in the database' })
+        return
+      }
+      const id = req.user._id
+      User.findByIdAndUpdate(id, { VIN_ids: [vinDoc._id] }, { new: true })
+        .populate('VIN_ids')
+        .then(updateVIN => {
+          res.send(updateVIN)
+        })
+    })
+    .catch(err => next(err))
+})
+
+router.post('/add-vehicle', (req, res, next) => {
+  // console.log(req.body) { vin: 'SJNFAAZE0U6054202' }
+  const { vin } = req.body
+
+  VINModel.findOne({ VIN: vin })
+    .then(vinDoc => {
+      if (vinDoc === null) {
+        res
+          .status(409)
+          .json({ message: 'The VIN does not exists in the database' })
+        return
+      }
+
+      User.findByIdAndUpdate(
+        req.user._id,
+        { $push: { VIN_ids: [vinDoc._id] } },
+        { new: true }
+      )
+        .populate('VIN_ids')
+        .then(addVin => {
+          res.send(addVin)
+        })
+    })
+    .catch(err => next(err))
 })
 
 module.exports = router

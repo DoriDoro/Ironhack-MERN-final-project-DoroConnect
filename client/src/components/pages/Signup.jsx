@@ -34,7 +34,7 @@ export default function Signup(props) {
         console.log('SUCCESS!')
         props.history.push('/profile') // Redirect to the another page
       })
-      .catch(err => setState({ message: err.toString() }))
+      .catch(err => setState({ ...state, message: err.toString() }))
   }
   return (
     <div className="Signup">

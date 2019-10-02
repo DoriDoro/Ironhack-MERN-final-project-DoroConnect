@@ -66,6 +66,37 @@ export default {
     return service.get('/logout')
   },
 
+  editProfile(changeDetails) {
+    return service
+      .post('/edit-profile', changeDetails)
+      .then(res => {
+        localStorage.setItem('user', JSON.stringify(res.data))
+        return res.data
+      })
+      .catch(errHandler)
+  },
+
+  editVINDetails(changeVINDetails) {
+    return service
+      .post('/edit-vehicle', changeVINDetails)
+      .then(res => {
+        localStorage.setItem('user', JSON.stringify(res.data))
+        // console.log('--- data', res.data) // correct details
+        return res.data
+      })
+      .catch(errHandler)
+  },
+
+  addVehicle(addVIN) {
+    return service
+      .post('/add-vehicle', addVIN)
+      .then(res => {
+        localStorage.setItem('user', JSON.stringify(res.data))
+        return res.data
+      })
+      .catch(errHandler)
+  },
+
   // TODO!!!!!!!!!
   // This is an example on how to use this method in a different file
   // api.getCountries().then(countries => { /* ... */ })
@@ -83,12 +114,12 @@ export default {
   //     .catch(errHandler)
   // },
 
-  getSecret() {
-    return service
-      .get('/secret')
-      .then(res => res.data)
-      .catch(errHandler)
-  },
+  // getSecret() {
+  //   return service
+  //     .get('/secret')
+  //     .then(res => res.data)
+  //     .catch(errHandler)
+  // },
 
   // addPicture(file) {
   //   const formData = new FormData()

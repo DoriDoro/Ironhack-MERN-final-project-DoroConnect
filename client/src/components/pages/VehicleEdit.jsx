@@ -1,15 +1,18 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import api from '../../api'
+import { Link } from 'react-router-dom'
 
-export default function AddVehicle(props) {
-  const [addVehicle, setAddVehicle] = useState({
-    vin: '',
+export default function VehicleEdit(props) {
+  const user = JSON.parse(localStorage.getItem('user'))
+  // console.log(user)
+
+  const [editVIN, setEditVIN] = useState({
+    vin: user.VIN_ids[0].VIN,
   })
 
   function handleChange(e) {
-    setAddVehicle({
-      ...addVehicle,
+    setEditVIN({
+      ...editVIN,
       [e.target.name]: e.target.value,
     })
   }
@@ -17,38 +20,33 @@ export default function AddVehicle(props) {
   function handleClick(e) {
     e.preventDefault()
 
-    let newVIN = {
-      vin: addVehicle.vin,
-    }
-
+    let newVIN = { vin: editVIN.vin }
+    // console.log(newVIN)
     api
-      .addVehicle(newVIN)
+      .editVINDetails(newVIN)
       .then(result => {
-        console.log('VIN added')
+        console.log('success, VIN undated')
         props.history.push('/profile')
       })
-      .catch(err => setAddVehicle({ message: err.toString() }))
+      .catch(err => setEditVIN({ ...editVIN, message: err.toString() }))
   }
 
   return (
-    <div className="AddVehicle">
-      <h2> Add a new Vehicle </h2>
-      <p>Please enter a new vehicle identification number to your account.</p>
+    <div className="VehicleEdit">
+      <h2> Edit the VIN </h2>
 
       <form className="Profile__form-ProfileDetails form">
         <label> VIN: </label>
         <input
           type="text"
           name="vin"
-          value={addVehicle.vin}
+          value={editVIN.vin}
           onChange={handleChange}
         />
 
         <div className="form-div__btn-container form-div__btn-container-add-margin">
           <div className="form-div__btn btn-margin">
-            <Link to="/profile">
-              <button onClick={e => handleClick(e)}> Add Vehicle </button>
-            </Link>
+            <button onClick={e => handleClick(e)}> Save </button>
           </div>
           <div className="form-div__btn">
             <Link to="/profile">
@@ -57,6 +55,9 @@ export default function AddVehicle(props) {
           </div>
         </div>
       </form>
+      {editVIN.message && (
+        <div className="info info-danger">{editVIN.message}</div>
+      )}
     </div>
   )
 }

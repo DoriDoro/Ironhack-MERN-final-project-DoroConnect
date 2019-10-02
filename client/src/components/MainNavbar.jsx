@@ -12,6 +12,7 @@ function MainNavbar(props) {
       <div className="MainNavbar__fistDiv">
         {!api.isLoggedIn() && <NavLink to="/signup">Signup</NavLink>}
         {!api.isLoggedIn() && <NavLink to="/login">Login</NavLink>}
+        {api.isLoggedIn() && <Link to="/profile">Profile</Link>}
         {api.isLoggedIn() && (
           <Link to="/" onClick={handleLogoutClick}>
             Logout
