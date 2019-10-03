@@ -1,18 +1,37 @@
 import React from 'react'
+import api from '../../api'
 import { Link } from 'react-router-dom'
-// import { useLocation } from 'react-use'
 
 export default function VehicleDetails(props) {
   const user = JSON.parse(localStorage.getItem('user'))
-  console.log(props.match.params.VIN, user)
+  // console.log(props.match.params.VIN, user)
+  // console.log(`--------- user`, user)
 
   const singleVIN = props.match.params.VIN
+  // console.log(singleVIN)
 
   function getSelectedVIN() {
     const resultSelectedVIN = user.VIN_ids.filter(v => v.VIN === singleVIN)
-    // console.log(`here`, resultSelectedVIN[0])
-
+    // console.log(`here`, resultSelectedVIN[0]) // the object with all info about the VIN_ids of the VIN for this route
+    // console.log('second: ', resultSelectedVIN[0]._id)
+    // console.log(`----`, resultSelectedVIN)
     return resultSelectedVIN[0]
+  }
+
+  function onHandleDelete(e) {
+    e.preventDefault()
+    let getSelected_id = getSelectedVIN()._id
+
+    api
+      .deleteVehicle(getSelected_id)
+      .then(updatedUser => {
+        console.log('Deletion successfull')
+        // console.log(getSelected_id)
+        localStorage.setItem('user', JSON.stringify(updatedUser))
+
+        props.history.push('/profile')
+      })
+      .catch(err => console.log(err))
   }
 
   return (
@@ -24,14 +43,9 @@ export default function VehicleDetails(props) {
         <input type="text" name="vin" value={getSelectedVIN().VIN} disabled />
 
         <div className="form-div__btn-container form-div__btn-container-add-margin">
-          <div className="form-div__btn btn-margin">
-            <Link to={`/edit-vehicle/${getSelectedVIN()}`}>
-              <button> Edit VIN </button>
-            </Link>
-          </div>
           <div className="form-div__btn">
             <Link to="/profile">
-              <button> Delete VIN </button>
+              <button onClick={e => onHandleDelete(e)}> Delete VIN </button>
             </Link>
           </div>
         </div>

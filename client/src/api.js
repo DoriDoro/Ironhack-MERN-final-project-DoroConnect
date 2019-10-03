@@ -76,17 +76,6 @@ export default {
       .catch(errHandler)
   },
 
-  editVINDetails(changeVINDetails) {
-    return service
-      .post('/edit-vehicle', changeVINDetails)
-      .then(res => {
-        localStorage.setItem('user', JSON.stringify(res.data))
-        // console.log('--- data', res.data) // correct details
-        return res.data
-      })
-      .catch(errHandler)
-  },
-
   addVehicle(addVIN) {
     return service
       .post('/add-vehicle', addVIN)
@@ -97,40 +86,12 @@ export default {
       .catch(errHandler)
   },
 
-  // TODO!!!!!!!!!
-  // This is an example on how to use this method in a different file
-  // api.getCountries().then(countries => { /* ... */ })
-  // getCountries() {
-  //   return service
-  //     .get('/countries')
-  //     .then(res => res.data)
-  //     .catch(errHandler)
-  // },
-
-  // addCountry(body) {
-  //   return service
-  //     .post('/countries', body)
-  //     .then(res => res.data)
-  //     .catch(errHandler)
-  // },
-
-  // getSecret() {
-  //   return service
-  //     .get('/secret')
-  //     .then(res => res.data)
-  //     .catch(errHandler)
-  // },
-
-  // addPicture(file) {
-  //   const formData = new FormData()
-  //   formData.append('picture', file)
-  //   return service
-  //     .post('/endpoint/to/add/a/picture', formData, {
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //       },
-  //     })
-  //     .then(res => res.data)
-  //     .catch(errHandler)
-  // },
+  deleteVehicle(deleteVIN) {
+    return service
+      .delete(`/vehicle-details/${deleteVIN}`) // URL needed to delete
+      .then(res => {
+        return res.data
+      })
+      .catch(errHandler)
+  },
 }

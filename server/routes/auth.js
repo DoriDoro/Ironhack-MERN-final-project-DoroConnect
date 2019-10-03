@@ -43,7 +43,7 @@ router.post('/signup', (req, res, next) => {
           firstName: req.body.firstName,
           lastName: req.body.lastName,
         })
-          .populate('VIN_ids')
+          // .populate('VIN_ids')
           .then(userSaved => {
             // LOG IN THIS USER
             // "req.logIn()" is a Passport method that calls "serializeUser()"
@@ -129,29 +129,6 @@ router.post('/edit-profile', (req, res, next) => {
     .catch(err => next(err))
 })
 
-router.post('/edit-vehicle', (req, res, next) => {
-  // console.log(req.body) chaeck the name of VIN in the req.body
-  const { vin } = req.body
-
-  VINModel.findOne({ VIN: vin })
-    .then(vinDoc => {
-      // console.log(vinDoc)
-      if (vinDoc === null) {
-        res
-          .status(409)
-          .json({ message: 'The VIN does not exist in the database' })
-        return
-      }
-      const id = req.user._id
-      User.findByIdAndUpdate(id, { VIN_ids: [vinDoc._id] }, { new: true })
-        .populate('VIN_ids')
-        .then(updateVIN => {
-          res.send(updateVIN)
-        })
-    })
-    .catch(err => next(err))
-})
-
 router.post('/add-vehicle', (req, res, next) => {
   // console.log(req.body) { vin: 'SJNFAAZE0U6054202' }
   const { vin } = req.body
@@ -174,6 +151,22 @@ router.post('/add-vehicle', (req, res, next) => {
         .then(addVin => {
           res.send(addVin)
         })
+    })
+    .catch(err => next(err))
+})
+
+router.delete('/vehicle-details/:id', (req, res, next) => {
+  //console.log('vin id', req.params.id)
+  //console.log(`user id`, req.user._id) // Object_id of the user
+
+  User.findByIdAndUpdate(
+    req.user._id,
+    { $pull: { VIN_ids: req.params.id } },
+    { new: true }
+  )
+    .then(user => {
+      //console.log(user)
+      res.send(user) // going back to client
     })
     .catch(err => next(err))
 })

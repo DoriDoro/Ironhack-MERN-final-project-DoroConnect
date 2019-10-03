@@ -16,7 +16,7 @@ export default function Profile() {
     <div className="Profile">
       <h2> Welcome to your profile </h2>
 
-      <div className="Profile__div-container">
+      <div className="form__div-container">
         <form className="Profile__form-ProfileDetails form">
           <label> First Name: </label>
           <input type="text" name="firstName" value={user.firstName} disabled />
@@ -55,7 +55,7 @@ export default function Profile() {
         <form className="Profile__form-ProfileDetails form">
           <div className="form-div__btn">
             <Link to="/add-vehicle">
-              <button> Add new Vehicle </button>
+              <button> Add Vehicle </button>
             </Link>
           </div>
 

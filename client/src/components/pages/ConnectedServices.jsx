@@ -4,33 +4,41 @@ import { Link } from 'react-router-dom'
 export default function ConnectedServices() {
   return (
     <div className="ConnectedServices">
-      <p> km: </p>
-      <p> climate controle: </p>
+      <h2> Connected Services: </h2>
 
-      <div className="ConnectedServices__battery">
-        <p> battery status: </p>
-      </div>
-      <div>
-        <p> temperatur: </p>
-      </div>
+      <div className="form__div-container">
+        <form className="Profile__form-ProfileDetails form">
+          <label> total millage: </label>
+          <input type="text" name="km" disabled value="50km" />
 
-      <form className="Profile__form-ProfileDetails form">
-        <label> route planner: </label>
-        <div className="form-div__btn">
-          <a
-            href="https://chargemap.com/map"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <button> ChargeMaps </button>
-          </a>
-        </div>
-        <div className="form-div__btn">
-          <Link to="/profile">
-            <button> Back to Profile </button>
-          </Link>
-        </div>
-      </form>
+          <label> battery status: </label>
+          <input type="text" name="battery" value="50%" disabled />
+
+          <label> temperature: </label>
+          <input type="text" name="temp" value="20°C" disabled />
+
+          <div className="form-div__btn">
+            <Link to="/profile">
+              <button> Back to Profile </button>
+            </Link>
+          </div>
+        </form>
+
+        <form className="Profile__form-ProfileDetails form">
+          <div className="form-div__btn">
+            <button>
+              {' '}
+              <a
+                href="https://chargemap.com/map"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                route planner: ChargeMaps
+              </a>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   )
 }
