@@ -43,6 +43,7 @@ User.deleteMany()
     throw err
   })
 
+//
 // create 20 VIN
 let VINs = [
   {
